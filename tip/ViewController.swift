@@ -13,12 +13,14 @@ class ViewController: UIViewController {
     @IBOutlet weak var totalAmount: UILabel!
     @IBOutlet weak var tipSlider: UISlider!
     @IBOutlet weak var tipPercentageController: UISegmentedControl!
+    @IBOutlet weak var totalEach: UILabel!
+    @IBOutlet weak var partySizeField: UITextField!
+    @IBOutlet weak var tipPercentage: UILabel!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
     }
-
 
     @IBAction func calculateTip(_ sender: Any) {
         let bill = Double(billAmount.text!) ?? 0
@@ -29,16 +31,25 @@ class ViewController: UIViewController {
         
         var tip = 0.0
         
+        var tipPercentageValue = 0.0
+        
         if (tipIndex == 3) {
-            tip = bill * Double (tipSlider.value)
+            tipPercentageValue = Double (tipSlider.value)
         } else {
-            tip = bill * tipPercentages[tipIndex]
+            tipPercentageValue = tipPercentages[tipIndex]
         }
         
+        tip = bill * tipPercentageValue
+        
+        let partySize = Double(partySizeField.text!) ?? 1
+
         let total = bill + tip
+        let eachPersonPrice = total/partySize
         
         tipAmount.text = String(format:"$%.2f", tip)
+        tipPercentage.text = String(format: "%.1f%%", tipPercentageValue*100)
         totalAmount.text = String(format: "$%.2f", total)
+        totalEach.text = String(format: "$%.2f", eachPersonPrice)
     }
     
     
